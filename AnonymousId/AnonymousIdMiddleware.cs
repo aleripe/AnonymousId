@@ -36,6 +36,9 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
                     httpContext.Response.Cookies.Delete(cookieOptions.Name);
                 }
 
+                // Adds the feature to request collection
+                httpContext.Features.Set<IAnonymousIdFeature>(new AnonymousIdFeature());
+
                 return;
             }
 
@@ -43,10 +46,18 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
             encodedValue = httpContext.Request.Cookies[cookieOptions.Name];
             AnonymousIdData decodedValue = AnonymousIdEncoder.Decode(encodedValue);
 
+            string anonymousId = null;
+
             if (decodedValue != null && !string.IsNullOrWhiteSpace(decodedValue.AnonymousId))
             {
                 // Copy the existing value in Request header
-                httpContext.Request.Headers[cookieOptions.HeaderName] = decodedValue.AnonymousId;
+                anonymousId = decodedValue.AnonymousId;
+
+                // Adds the feature to request collection
+                httpContext.Features.Set<IAnonymousIdFeature>(new AnonymousIdFeature()
+                {
+                    AnonymousId = anonymousId
+                });
             }
 
             // User is already authenticated
@@ -61,10 +72,16 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
                 return;
             }
 
-            if (string.IsNullOrWhiteSpace(httpContext.Request.Headers[cookieOptions.HeaderName]))
+            if (string.IsNullOrWhiteSpace(anonymousId))
             {
                 // Creates a new identity
-                httpContext.Request.Headers[cookieOptions.HeaderName] = Guid.NewGuid().ToString();
+                anonymousId = Guid.NewGuid().ToString();
+
+                // Adds the feature to request collection
+                httpContext.Features.Set<IAnonymousIdFeature>(new AnonymousIdFeature()
+                {
+                    AnonymousId = anonymousId
+                });
             }
             else
             {
@@ -76,15 +93,13 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
             }
 
             // Appends the new cookie
-            AnonymousIdData data = new AnonymousIdData(httpContext.Request.Headers[cookieOptions.HeaderName], cookieOptions.Expires.Value.DateTime);
+            AnonymousIdData data = new AnonymousIdData(anonymousId, cookieOptions.Expires.Value.DateTime);
             encodedValue = AnonymousIdEncoder.Encode(data);
             httpContext.Response.Cookies.Append(cookieOptions.Name, encodedValue, cookieOptions);
         }
 
         public static void ClearAnonymousId(HttpContext httpContext, AnonymousIdCookieOptions cookieOptions)
         {
-            httpContext.Request.Headers.Remove(cookieOptions.HeaderName);
-
             if (!string.IsNullOrWhiteSpace(httpContext.Request.Cookies[cookieOptions.Name]))
             {
                 httpContext.Response.Cookies.Delete(cookieOptions.Name);

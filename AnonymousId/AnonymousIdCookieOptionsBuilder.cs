@@ -10,14 +10,12 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
         private const int MINIMUM_COOKIE_TIMEOUT = 1;
         private const int MAXIMUM_COOKIE_TIMEOUT = 60 * 24 * 365 * 2;
         private const bool DEFAULT_COOKIE_REQUIRE_SSL = false;
-        private const string DEFAULT_HEADER_NAME = "AnonymousId";
         
         private string cookieName;
         private string cookiePath;
         private int? cookieTimeout;
         private string cookieDomain;
         private bool? cookieRequireSsl;
-        private string headerName;
 
         public AnonymousIdCookieOptionsBuilder SetCustomCookieName(string cookieName)
         {
@@ -49,12 +47,6 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
             return this;
         }
 
-        public AnonymousIdCookieOptionsBuilder SetCustomHeaderName(string headerName)
-        {
-            this.headerName = headerName;
-            return this;
-        }
-
         public AnonymousIdCookieOptions Build()
         {
             AnonymousIdCookieOptions options = new AnonymousIdCookieOptions
@@ -63,8 +55,7 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
                 Path = cookiePath ?? DEFAULT_COOKIE_PATH,
                 Timeout = cookieTimeout ?? DEFAULT_COOKIE_TIMEOUT,
                 Expires = DateTime.UtcNow.AddSeconds(cookieTimeout ?? DEFAULT_COOKIE_TIMEOUT),
-                Secure = cookieRequireSsl ?? DEFAULT_COOKIE_REQUIRE_SSL,
-                HeaderName = headerName ?? DEFAULT_HEADER_NAME
+                Secure = cookieRequireSsl ?? DEFAULT_COOKIE_REQUIRE_SSL
             };
 
             if (!string.IsNullOrWhiteSpace(cookieDomain))
