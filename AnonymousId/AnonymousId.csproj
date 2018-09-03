@@ -3,11 +3,11 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp1.1</TargetFramework>
     <PackageId>ReturnTrue.AspNetCore.Identity.Anonymous</PackageId>
-    <PackageVersion>1.0.0</PackageVersion>
+    <PackageVersion>1.1.0</PackageVersion>
     <Authors>Alessandro Riperi</Authors>
     <Description>Middleware for ASP.NET Core to enable the tracking of anonymous users</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageReleaseNotes>First release</PackageReleaseNotes>
+    <PackageReleaseNotes>Migration from request headers to request features</PackageReleaseNotes>
     <PackageTags>AspNetCore Identity Anonymous</PackageTags>
     <Copyright>This project is licensed under the terms of the MIT license.</Copyright>
     <PackageLicenseUrl>https://github.com/aleripe/AnonymousId/blob/master/License.md</PackageLicenseUrl>
@@ -15,6 +15,9 @@
     <RepositoryUrl>https://github.com/aleripe/AnonymousId</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
+    <Version>1.1.1</Version>
   </PropertyGroup>
 
   <ItemGroup>

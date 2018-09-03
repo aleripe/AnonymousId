@@ -8,7 +8,7 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
     {
         internal static string Encode(AnonymousIdData data)
         {
-            if (data == null)
+            if (data == null || string.IsNullOrWhiteSpace(data.AnonymousId))
             {
                 return null;
             }
