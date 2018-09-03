@@ -37,7 +37,11 @@ public class HomeController : Controller
 {
   public ViewResult Index()
   {
-      string anonymousId = Request.Headers["AnonymousId"];
+      IAnonymousIdFeature feature = HttpContext.Features.Get<IAnonymousIdFeature>();
+      if (feature != null)
+      {
+        string anonymousId = feature.AnonymousId;
+      }
       ....
   }
 }
