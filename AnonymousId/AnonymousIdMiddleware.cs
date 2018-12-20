@@ -25,7 +25,7 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
         {
             string encodedValue;
             bool isAuthenticated = httpContext.User.Identity.IsAuthenticated;
-            DateTime now = DateTime.UtcNow;
+            DateTime now = DateTime.Now;
 
             // Handle secure cookies over an unsecured connection
             if (cookieOptions.Secure && !httpContext.Request.IsHttps)
@@ -91,6 +91,9 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
                     return;
                 }
             }
+
+            // Resets cookie expiration time
+            cookieOptions.Expires = DateTime.UtcNow.AddSeconds(cookieOptions.Timeout);
 
             // Appends the new cookie
             AnonymousIdData data = new AnonymousIdData(anonymousId, cookieOptions.Expires.Value.DateTime);

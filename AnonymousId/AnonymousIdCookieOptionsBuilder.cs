@@ -6,8 +6,8 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
     {
         private const string DEFAULT_COOKIE_NAME = ".ASPXANONYMOUS";
         private const string DEFAULT_COOKIE_PATH = "/";
-        private const int DEFAULT_COOKIE_TIMEOUT = 100000;
-        private const int MINIMUM_COOKIE_TIMEOUT = 1;
+        private const int DEFAULT_COOKIE_TIMEOUT = 120;
+        private const int MINIMUM_COOKIE_TIMEOUT = 120;
         private const int MAXIMUM_COOKIE_TIMEOUT = 60 * 24 * 365 * 2;
         private const bool DEFAULT_COOKIE_REQUIRE_SSL = false;
         
@@ -54,7 +54,6 @@ namespace ReturnTrue.AspNetCore.Identity.Anonymous
                 Name = cookieName ?? DEFAULT_COOKIE_NAME,
                 Path = cookiePath ?? DEFAULT_COOKIE_PATH,
                 Timeout = cookieTimeout ?? DEFAULT_COOKIE_TIMEOUT,
-                Expires = DateTime.UtcNow.AddSeconds(cookieTimeout ?? DEFAULT_COOKIE_TIMEOUT),
                 Secure = cookieRequireSsl ?? DEFAULT_COOKIE_REQUIRE_SSL
             };
 
